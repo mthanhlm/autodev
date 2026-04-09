@@ -100,7 +100,7 @@ updated: {date}
 </step>
 
 <step name="handle_results">
-If all pass → Mark phase complete in PHASES.md, report success.
+If all pass → Set phase status to "complete" in PHASES.md, report success.
 
 If some fail:
 ```

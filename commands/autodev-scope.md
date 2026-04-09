@@ -124,14 +124,10 @@ Create PHASES.md:
 # Phases
 
 ## Phase 1: {name}
-- [ ] Planned
-- [ ] Executed
-- [ ] Verified
+Status: pending
 
 ## Phase 2: {name}
-- [ ] Planned
-- [ ] Executed
-- [ ] Verified
+Status: pending
 
 ... (for each phase)
 ```
@@ -140,14 +136,16 @@ Create STATE.md:
 ```markdown
 # State
 
-**Scope:** {name}
-**Current Phase:** {first phase}
+**Current Phase:** 1
 **Status:** planning
-**Last Activity:** {date}
 
-## Quick Tasks
-| Date | Type | Description | Status |
-|------|------|-------------|--------|
+## Decisions
+- {decision 1}
+- {decision 2}
+
+## Notes
+- {note 1}
+- {note 2}
 ```
 
 Update ROADMAP.md if it exists, or create as summary.

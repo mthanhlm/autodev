@@ -116,11 +116,11 @@ Output: [What artifacts will be created]
 
 <step name="update_state">
 Update STATE.md:
-- Set current phase status to "planning"
+- Set **Status:** to "planning"
 - Record phase start time
 
 Update PHASES.md:
-- Mark phase as "Planned"
+- Set phase status to "planned"
 </step>
 
 <step name="done">

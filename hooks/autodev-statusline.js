@@ -66,9 +66,9 @@ process.stdin.on('end', () => {
         const phaseLines = phasesContent.match(/^## Phase \d+: .+/gm) || [];
         const totalPhases = phaseLines.length;
 
-        // Count completed phases
+        // Count completed phases (Status: complete)
         let completedPhases = 0;
-        const completedMatches = phasesContent.match(/^\- \[x\] /gm) || [];
+        const completedMatches = phasesContent.match(/^Status: complete$/gm) || [];
         completedPhases = completedMatches.length;
 
         // Calculate overall progress

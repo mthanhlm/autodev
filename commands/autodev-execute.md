@@ -41,7 +41,7 @@ Group plans by wave number from frontmatter.
 
 <step name="update_state">
 Update STATE.md for phase start:
-- Set status to "executing"
+- Set **Status:** to "executing"
 - Record start time
 </step>
 
