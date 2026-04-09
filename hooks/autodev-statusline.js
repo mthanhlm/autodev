@@ -29,13 +29,13 @@ process.stdin.on('end', () => {
       const bar = '█'.repeat(filled) + '░'.repeat(10 - filled);
 
       if (used < 50) {
-        ctx = ` \x1b[32m${bar} ${used}%\x1b[0m`;
+        ctx = ` \x1b[2m│ ctx:\x1b[0m \x1b[32m${bar} ${used}%\x1b[0m`;
       } else if (used < 65) {
-        ctx = ` \x1b[33m${bar} ${used}%\x1b[0m`;
+        ctx = ` \x1b[2m│ ctx:\x1b[0m \x1b[33m${bar} ${used}%\x1b[0m`;
       } else if (used < 80) {
-        ctx = ` \x1b[38;5;208m${bar} ${used}%\x1b[0m`;
+        ctx = ` \x1b[2m│ ctx:\x1b[0m \x1b[38;5;208m${bar} ${used}%\x1b[0m`;
       } else {
-        ctx = ` \x1b[5;31m💀 ${bar} ${used}%\x1b[0m`;
+        ctx = ` \x1b[2m│ ctx:\x1b[0m \x1b[5;31m💀 ${bar} ${used}%\x1b[0m`;
       }
     }
 
@@ -80,19 +80,18 @@ process.stdin.on('end', () => {
         const filled = Math.floor(phaseProgress / 10);
         const progressBar = '█'.repeat(filled) + '░'.repeat(10 - filled);
 
-        // Format: scope | phase N | ████░░░░░░ 40%
-        scopeInfo = `\x1b[1m${scopeName}\x1b[0m │ Phase ${currentPhase} │ \x1b[32m${progressBar} ${phaseProgress}%\x1b[0m`;
+        // Format: scope | Phase N: ████░░░░░░ 40%
+        scopeInfo = `\x1b[1m${scopeName}\x1b[0m │ Phase ${currentPhase}: \x1b[32m${progressBar} ${phaseProgress}%\x1b[0m`;
       } catch (e) {
         // Silently fail - don't break statusline
       }
     }
 
     // Output
-    const dirname = path.basename(dir);
     if (scopeInfo) {
-      process.stdout.write(`\x1b[2m${model}\x1b[0m │ ${scopeInfo} │ \x1b[2m${dirname}\x1b[0m${ctx}`);
+      process.stdout.write(`\x1b[2m${model}\x1b[0m │ ${scopeInfo}${ctx}`);
     } else {
-      process.stdout.write(`\x1b[2m${model}\x1b[0m │ \x1b[2m${dirname}\x1b[0m${ctx}`);
+      process.stdout.write(`\x1b[2m${model}\x1b[0m${ctx}`);
     }
   } catch (e) {
     // Silent fail
