@@ -36,12 +36,13 @@ cp -r /path/to/autodev ~/.claude/plugins/
 | `/autodev-scope` | Create scope from existing repo |
 | `/autodev-next` | Auto-advance to next logical step |
 | `/autodev-plan <phase>` | Create detailed phase plans |
-| `/autodev-execute <phase>` | Execute plans in waves |
+| `/autodev-execute <phase>` | Execute plans (sequential blocking) |
 | `/autodev-verify <phase>` | Manual UAT after execution |
 | `/autodev-fast <task>` | Inline trivial tasks, no planning |
 | `/autodev-do <text>` | Smart dispatch to right command |
 | `/autodev-progress` | Show current state and next steps |
 | `/autodev-health` | Validate project integrity |
+| `/autodev-cleanup` | Remove entire scope (.autodev/) |
 
 ## Workflow
 
