@@ -15,18 +15,22 @@ Lean workflow plugin for scope-driven development. Plan, execute, and verify wit
 
 ## Installation
 
-### From GitHub (Recommended)
+### From GitHub Marketplace (Recommended)
+
+The plugin is published to the Claude Code marketplace. Claude Code will automatically manage versions in `~/.claude/plugins/cache/autodev/autodev/<version>/`.
+
+### From GitHub (Manual)
 
 ```bash
 # Clone to Claude Code plugins directory
-git clone https://github.com/autonxt/autodev.git ~/.claude/plugins/autodev
+git clone https://github.com/autonxt/autodev.git ~/.claude/plugins/cache/autodev/autodev
 ```
 
 ### From Local Copy
 
 ```bash
-# Copy to Claude Code plugins directory
-cp -r /path/to/autodev ~/.claude/plugins/
+# Copy to Claude Code plugins cache directory
+cp -r /path/to/autodev ~/.claude/plugins/cache/autodev/autodev
 ```
 
 ## Commands
@@ -97,16 +101,14 @@ cp -r /path/to/autodev ~/.claude/plugins/
 
 ## Statusline
 
-The statusline shows real-time context window usage and scope progress:
+The statusline shows real-time context window usage and current working directory:
 
 ```
-model │ scope │ Phase N │ ████░░░░░░ 40% │ context ████████░░ 62% │ dirname
+dirname │ ctx: ████████░░ 62%
 ```
 
 **What it shows:**
-- **Model** — Current Claude model
-- **Scope:Phase** — Current scope name and phase number
-- **Scope Progress** — Percentage of phases completed (from PHASES.md checkboxes)
+- **Directory name** — Current working directory (basename)
 - **Context Usage** — Color-coded context window consumption
 
 **Context colors:**

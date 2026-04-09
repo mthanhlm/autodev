@@ -14,19 +14,18 @@ Register the autodev statusline hook in Claude Code settings.json so it displays
 <process>
 
 <step name="detect_global_plugin_path">
-The global plugin is always at `~/.claude/plugins/autodev@autodev/`. This is the source of truth for the latest version.
+The global plugin is always at `~/.claude/plugins/cache/autodev/autodev/<version>/`. Find the latest version directory.
 
-Verify it exists:
 ```bash
-[ -d ~/.claude/plugins/autodev@autodev ] && echo "global" || echo "not-found"
+ls -d ~/.claude/plugins/cache/autodev/autodev/*/ 2>/dev/null | sort -V | tail -1
 ```
 </step>
 
 <step name="build_statusline_command">
-Use the global plugin path:
+Use the global plugin path (latest version):
 ```bash
-STATUSLINE_PATH="~/.claude/plugins/autodev@autodev/hooks/autodev-statusline.js"
-# Expand ~ to home directory
+AUTODEV_PLUGIN_DIR="$(ls -d ~/.claude/plugins/cache/autodev/autodev/*/ 2>/dev/null | sort -V | tail -1 | tr -d '/')"
+STATUSLINE_PATH="$AUTODEV_PLUGIN_DIR/hooks/autodev-statusline.js"
 STATUSLINE_CMD="node $(eval echo $STATUSLINE_PATH)"
 ```
 </step>
@@ -49,16 +48,17 @@ Use Read → Edit to preserve all other settings.
 </step>
 
 <step name="verify">
-Verify the statusline hook exists and has valid syntax:
+Find latest version and verify syntax:
 ```bash
-node -c ~/.claude/plugins/autodev@autodev/hooks/autodev-statusline.js && echo "✓ Syntax OK"
+AUTODEV_PLUGIN_DIR="$(ls -d ~/.claude/plugins/cache/autodev/autodev/*/ 2>/dev/null | sort -V | tail -1 | tr -d '/')"
+node -c "$AUTODEV_PLUGIN_DIR/hooks/autodev-statusline.js" && echo "✓ Syntax OK"
 ```
 </step>
 
 </process>
 
 <success_criteria>
-- [ ] Uses global plugin path (~/.claude/plugins/autodev@autodev/)
+- [ ] Uses global plugin path (~/.claude/plugins/cache/autodev/autodev/)
 - [ ] Always updates to latest version (overwrites existing)
 - [ ] statusLine entry correctly added to settings.json
 - [ ] Syntax verification passes

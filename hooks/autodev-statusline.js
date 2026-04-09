@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Autodev Statusline - PreToolUse hook
-// Reads .autodev files directly for live updates on each tool use
+// Autodev Statusline
+// Shows: context window usage and current working directory
 
 const fs = require('fs');
 const path = require('path');
@@ -10,52 +10,13 @@ function getStatuslineOutput() {
 
   // Get project dir from env or cwd
   const dir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
-  const scopeDir = path.join(dir, '.autodev');
+  const cwd = path.basename(dir) || dir;
 
-  let scopeName = '';
-  let currentPhase = '';
-  let totalPhases = 0;
-  let completedPhases = 0;
   let remaining = null;
 
-  try {
-    const scopeFile = path.join(scopeDir, 'SCOPE.md');
-    const stateFile = path.join(scopeDir, 'STATE.md');
-    const phasesFile = path.join(scopeDir, 'PHASES.md');
-
-    // Parse scope name
-    if (fs.existsSync(scopeFile)) {
-      const content = fs.readFileSync(scopeFile, 'utf8');
-      const match = content.match(/^# Scope: (.+)$/m);
-      if (match) scopeName = match[1].trim();
-    }
-
-    // Parse current phase
-    if (fs.existsSync(stateFile)) {
-      const content = fs.readFileSync(stateFile, 'utf8');
-      const match = content.match(/\*\*Current Phase:\*\* (.+)/);
-      if (match) currentPhase = match[1].trim();
-    }
-
-    // Parse phases progress
-    if (fs.existsSync(phasesFile)) {
-      const content = fs.readFileSync(phasesFile, 'utf8');
-      const phaseLines = content.match(/^## Phase \d+: .+/gm) || [];
-      totalPhases = phaseLines.length;
-      const completed = content.match(/^Status: complete$/gm) || [];
-      completedPhases = completed.length;
-    }
-
-    // Get context remaining from env if available
-    if (process.env.AUTODEV_CTX_REMAINING) {
-      remaining = parseFloat(process.env.AUTODEV_CTX_REMAINING);
-    }
-  } catch (e) {
-    return '';
-  }
-
-  if (!scopeName) {
-    return '';
+  // Get context remaining from env if available
+  if (process.env.AUTODEV_CTX_REMAINING) {
+    remaining = parseFloat(process.env.AUTODEV_CTX_REMAINING);
   }
 
   // Context window display
@@ -78,18 +39,7 @@ function getStatuslineOutput() {
     }
   }
 
-  // Calculate progress
-  let phaseProgress = 0;
-  if (totalPhases > 0) {
-    phaseProgress = Math.round((completedPhases / totalPhases) * 100);
-  }
-
-  const filled = Math.floor(phaseProgress / 10);
-  const progressBar = '█'.repeat(filled) + '░'.repeat(10 - filled);
-
-  const scopeInfo = `\x1b[1m${scopeName}\x1b[0m │ Phase ${currentPhase}: \x1b[32m${progressBar} ${phaseProgress}%\x1b[0m`;
-
-  return `\x1b[2m${scopeInfo}${ctx}`;
+  return `\x1b[2m${cwd}\x1b[0m${ctx}`;
 }
 
 const output = getStatuslineOutput();
