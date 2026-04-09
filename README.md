@@ -13,7 +13,23 @@ Lean workflow plugin for scope-driven development. Plan, execute, and verify wit
 | Complex multi-tool dependency | Simple command-based workflow |
 | Workstreams, workspaces | Single scope |
 
-## Core Commands
+## Installation
+
+### From GitHub (Recommended)
+
+```bash
+# Clone to Claude Code plugins directory
+git clone https://github.com/autonxt/autodev.git ~/.claude/plugins/autodev
+```
+
+### From Local Copy
+
+```bash
+# Copy to Claude Code plugins directory
+cp -r /path/to/autodev ~/.claude/plugins/
+```
+
+## Commands
 
 | Command | Purpose |
 |---------|---------|
@@ -40,7 +56,7 @@ Lean workflow plugin for scope-driven development. Plan, execute, and verify wit
      ↓
 /autodev-verify 1       → Manual user acceptance testing
      ↓
-/autodev-next           → Advance to next phase
+/autodev-next           → Advance to next phase or suggest next command
 ```
 
 ## State Files
@@ -52,18 +68,6 @@ Lean workflow plugin for scope-driven development. Plan, execute, and verify wit
 | `.autodev/STATE.md` | Current state and decisions |
 | `.autodev/phases/N-*/{N}-{M}-PLAN.md` | Atomic task plans |
 | `.autodev/phases/N-*/{N}-{M}-SUMMARY.md` | Execution summaries |
-
-## Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/autonxt/autodev.git
-
-# Copy to Claude Code plugins directory
-cp -r autodev ~/.claude/plugins/
-
-# Or use --local for project-specific installation
-```
 
 ## Usage Example
 
@@ -93,6 +97,10 @@ cp -r autodev ~/.claude/plugins/
 ## No Auto-Commit Policy
 
 Autodev does NOT auto-commit. All commits must be manual per company policy. After execution, autodev reports which files need committing but never runs `git commit` itself.
+
+## Repository
+
+https://github.com/autonxt/autodev
 
 ## License
 
