@@ -1,21 +1,22 @@
 {
   "name": "autodev",
   "owner": {
-    "name": "mthanhlm"
+    "name": "autonxt"
   },
   "metadata": {
-    "description": "Autodev lightweight GSD"
+    "description": "Lean workflow plugin for scope-driven development - plan, execute, and verify without the overhead"
   },
   "plugins": [
     {
       "name": "autodev",
       "source": "./",
-      "description": "Autodev lightweight GSD",
-      "version": "0.1.1",
+      "description": "Lean workflow plugin for scope-driven development. Scope → Phase workflow without project/milestone hierarchy or auto-commit.",
+      "version": "0.1.0",
       "author": {
-        "name": "mthanhlm"
+        "name": "autonxt",
+        "url": "https://github.com/autonxt/autodev"
       },
-      "keywords": ["tdd", "sdd", "workflow", "phase-based", "context"]
+      "keywords": ["workflow", "planning", "execution", "scope", "phase", "context-engineering"]
     }
   ]
 }
