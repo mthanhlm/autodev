@@ -94,6 +94,26 @@ cp -r /path/to/autodev ~/.claude/plugins/
 # → Advances to next phase or suggests next command
 ```
 
+## Statusline
+
+The statusline shows real-time context window usage and scope progress:
+
+```
+model │ scope │ Phase N │ ████░░░░░░ 40% │ context ████████░░ 62% │ dirname
+```
+
+**What it shows:**
+- **Model** — Current Claude model
+- **Scope:Phase** — Current scope name and phase number
+- **Scope Progress** — Percentage of phases completed (from PHASES.md checkboxes)
+- **Context Usage** — Color-coded context window consumption
+
+**Context colors:**
+- Green (<50%) — Healthy context
+- Yellow (50-65%) — Getting used
+- Orange (65-80%) — Running low
+- Flashing red with skull (80%+) — Critical, compaction imminent
+
 ## No Auto-Commit Policy
 
 Autodev does NOT auto-commit. All commits must be manual per company policy. After execution, autodev reports which files need committing but never runs `git commit` itself.
