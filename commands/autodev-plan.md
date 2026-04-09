@@ -41,17 +41,29 @@ Verify phase exists.
 <step name="discuss_inline">
 **If `--discuss` flag present (or if phase has no CONTEXT.md):**
 
-Quick discussion to lock key decisions:
+Use AskUserQuestion for each gray area - ask SEPARATELY:
 
-Ask about each gray area:
-1. **Visual features** → Any specific UI requirements?
-2. **APIs/CLIs** → Response format, error handling preferences?
-3. **Data model** → Any specific field requirements?
-4. **Edge cases** → Known scenarios to handle?
+Question 1:
+```
+Any specific UI/visual requirements?
+```
 
-For each area, only ask if not already determined from scope.
+Question 2:
+```
+Any API/CLI preferences? (response format, error handling)
+```
 
-Create `{n}-CONTEXT.md` with locked decisions.
+Question 3:
+```
+Any specific data model requirements?
+```
+
+Question 4:
+```
+Any edge cases or known scenarios to handle?
+```
+
+For each question, only ask if not already determined from scope. Create `{n}-CONTEXT.md` with locked decisions.
 </step>
 
 <step name="create_plans">

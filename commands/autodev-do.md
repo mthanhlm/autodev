@@ -15,11 +15,10 @@ Analyze freeform natural language input and dispatch to the most appropriate aut
 <process>
 
 <step name="validate">
-If `$ARGUMENTS` is empty, ask:
+If `$ARGUMENTS` is empty, use AskUserQuestion:
 ```
 What would you like to do? Describe the task and I'll route it to the right command.
 ```
-Wait for response before continuing.
 </step>
 
 <step name="route">
@@ -36,7 +35,7 @@ Evaluate `$ARGUMENTS` against these routing rules. Apply the **first matching** 
 | Starting a new scope | `/autodev-scope` | Scope creation |
 | Bug investigation | Use `/autodev-execute` with bug-fixing approach | Needs execution |
 
-**Ambiguity handling:** If text could match multiple routes, ask the user:
+**Ambiguity handling:** If text could match multiple routes, use AskUserQuestion:
 ```
 "{description}" could be:
 1. /autodev-fast — Quick inline execution (if small and clear)
@@ -44,6 +43,7 @@ Evaluate `$ARGUMENTS` against these routing rules. Apply the **first matching** 
 
 Which approach fits better?
 ```
+Options: [/autodev-fast] [/autodev-plan]
 </step>
 
 <step name="display">

@@ -48,22 +48,23 @@ Group by functional area.
 </step>
 
 <step name="human_verification_loop">
-For each item, present to user:
+For each item, use AskUserQuestion SEPARATELY:
 
 ```
 ## {Deliverable}
 
 **Expected:** {behavior}
 **Test:** {steps}
-
-Result: [ ] PASS | [ ] FAIL | [ ] SKIP
-
-Notes:
 ```
 
-User marks pass/fail/skip.
+Options: [PASS] [FAIL] [SKIP]
 
-If FAIL, capture issue description.
+If FAIL, use AskUserQuestion:
+```
+Describe the issue:
+```
+
+Capture issue description.
 </step>
 
 <step name="create_uat_report">

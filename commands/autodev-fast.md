@@ -8,6 +8,7 @@ allowed-tools:
   - Edit
   - Bash
   - Grep
+  - AskUserQuestion
 ---
 
 <objective>
@@ -19,11 +20,10 @@ Execute a trivial task directly in the current context without spawning subagent
 <step name="parse_task">
 Parse `$ARGUMENTS` for the task description.
 
-If empty, ask:
+If empty, use AskUserQuestion:
 ```
 What's the quick fix? (one sentence)
 ```
-Store as `$TASK`.
 </step>
 
 <step name="scope_check">

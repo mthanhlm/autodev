@@ -20,11 +20,10 @@ Create a new scope definition for working in an existing repository. Asks about 
 <step name="parse_args">
 Parse `$ARGUMENTS` for scope name.
 
-If empty, ask:
+If empty, use AskUserQuestion:
 ```
 What is this scope about? (brief description of what you're building)
 ```
-Store as `$SCOPE_NAME`.
 </step>
 
 <step name="check_existing">
@@ -33,10 +32,12 @@ Check if `.autodev/` directory already exists:
 [ -d ".autodev" ] && echo "exists" || echo "new"
 ```
 
-If exists, ask:
+If exists, use AskUserQuestion to confirm:
 ```
 Existing autodev project found. Create a new scope anyway, or abort?
 ```
+Options: [Create new scope] [Abort]
+
 If user says abort, exit.
 </step>
 
@@ -56,23 +57,33 @@ Present a brief summary:
 </step>
 
 <step name="gather_requirements">
-Ask until scope is clear:
+Use AskUserQuestion tool to ask each question SEPARATELY:
 
-1. **What are you building?** (one paragraph describing the goal)
-2. **What must be true for this to be done?** (list must-haves)
-3. **What's out of scope?** (explicitly not included)
-4. **Any constraints?** (tech preferences, performance, etc.)
+Question 1 - use AskUserQuestion:
+```
+What are you building? (one paragraph describing the goal)
+```
 
-Store answers in `$SCOPE_GOAL`, `$MUST_HAVES`, `$OUT_OF_SCOPE`, `$CONSTRAINTS`.
+Question 2 - use AskUserQuestion:
+```
+What must be true for this to be done? (list the must-have requirements)
+```
+
+Question 3 - use AskUserQuestion:
+```
+What's out of scope? (what should NOT be included)
+```
+
+Question 4 - use AskUserQuestion:
+```
+Any constraints? (tech preferences, performance, license, etc.)
+```
 </step>
 
 <step name="break_into_phases">
-Break the scope into phases. Guidelines:
-- Each phase should be a vertical slice (model + API + UI if applicable)
-- 2-4 phases is typical for a scope
-- Each phase should be independently testable
+Based on the gathered requirements, propose 2-4 phases as vertical slices.
 
-Ask user to review and adjust:
+Use AskUserQuestion to confirm/adjust:
 ```
 ## Proposed Phases
 
@@ -82,8 +93,9 @@ Ask user to review and adjust:
 
 Add, remove, or reorder phases as needed.
 ```
+Options: [Accept these phases] [Modify]
 
-Store final phase list.
+If user says modify, ask what to change.
 </step>
 
 <step name="create_structure">
@@ -93,30 +105,24 @@ Create `.autodev/` directory structure:
 mkdir -p .autodev/phases
 ```
 
-Create SCOPE.md:
+Create SCOPE.md with the user's actual answers:
 ```markdown
-# Scope: {name}
+# Scope: {scope_name}
 
 **Created:** {date}
 **Status:** active
 
 ## Goal
-{goal description}
+{user's goal description}
 
 ## Must-Haves
-- {must-have 1}
-- {must-have 2}
+{user's must-haves as bullet list}
 
 ## Out of Scope
-- {out of scope 1}
-- {out of scope 2}
+{user's out-of-scope items}
 
 ## Constraints
-- {constraint 1}
-- {constraint 2}
-
-## Tech Stack
-{tech stack}
+{user's constraints}
 ```
 
 Create PHASES.md:
@@ -140,15 +146,11 @@ Create STATE.md:
 **Status:** planning
 
 ## Decisions
-- {decision 1}
-- {decision 2}
+- {key decisions made during scope creation}
 
 ## Notes
-- {note 1}
-- {note 2}
+- {additional notes}
 ```
-
-Update ROADMAP.md if it exists, or create as summary.
 </step>
 
 <step name="done">
