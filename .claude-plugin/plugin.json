@@ -8,5 +8,8 @@
   },
   "repository": "https://github.com/autonxt/autodev",
   "license": "MIT",
-  "keywords": ["workflow", "planning", "execution", "scope", "phase"]
+  "keywords": ["workflow", "planning", "execution", "scope", "phase"],
+  "statusline": {
+    "script": "node hooks/autodev-statusline.js"
+  }
 }

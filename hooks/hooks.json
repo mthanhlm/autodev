@@ -1,0 +1,17 @@
+{
+  "description": "Autodev workflow tracking hooks",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /home/autonxt/.claude/plugins/cache/claude-plugins-official/plugin-dev/unknown/hooks/scripts/load-context.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
