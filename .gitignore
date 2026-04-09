@@ -1,8 +1,0 @@
-# Autodev state files
-.autodev/
-
-# Common temporary files
-*
-*~:
-*.tmp
-.DS_Store

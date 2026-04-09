@@ -1,0 +1,21 @@
+{
+  "name": "autodev",
+  "owner": {
+    "name": "mthanhlm"
+  },
+  "metadata": {
+    "description": "Autodev lightweight GSD"
+  },
+  "plugins": [
+    {
+      "name": "autodev",
+      "source": "./",
+      "description": "Autodev lightweight GSD",
+      "version": "0.1.1",
+      "author": {
+        "name": "mthanhlm"
+      },
+      "keywords": ["tdd", "sdd", "workflow", "phase-based", "context"]
+    }
+  ]
+}
