@@ -58,7 +58,7 @@ For each wave:
 
 2. **If `--interactive` flag present:**
    Execute plans sequentially inline with user checkpoints.
-   
+
    For each plan:
    a. Show plan to user: Execute / Review / Skip
    b. If "Review first": Show task breakdown
@@ -66,9 +66,15 @@ For each wave:
    d. After each task: Brief pause for user intervention
 
 3. **If normal mode:**
-   Spawn Task(subagent_type="autodev-executor") for each plan in the wave in parallel.
+   Execute plans **sequentially** (not in parallel). Each Task() call blocks until complete:
 
-   Wait for all agents in wave to complete before proceeding to next wave.
+   - Spawn executor for Plan A, wait for completion
+   - Spawn executor for Plan B, wait for completion
+   - Etc.
+
+   **Why sequential blocking:** Keeps main context synchronized, prevents user from typing mid-execution, ensures clean state for each plan.
+
+   **Wave grouping still applies:** Wave 1 plans run first, then Wave 2, etc. Only the **within-wave** execution is sequential.
 </step>
 
 <step name="handle_results">
