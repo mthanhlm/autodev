@@ -6,6 +6,7 @@ allowed-tools:
   - Bash
   - Glob
   - Grep
+  - SlashCommand
 ---
 
 <objective>
@@ -94,12 +95,21 @@ Display the determination:
 **Current:** Phase [N] | [status]
 **Next step:** `/autodev-[command] [args]`
   [One-line explanation]
-
-⚠ Clear context before proceeding: /clear
 ```
 
-Then immediately invoke the determined command via SlashCommand.
+Then immediately invoke the determined command using the SlashCommand tool.
+Use the exact command determined in the routing step.
 No confirmation — the whole point is zero-friction advancement.
+</step>
+
+<step name="invoke_command">
+Use SlashCommand to invoke the next command:
+
+```
+SlashCommand({ command: "/autodev-[command] [args]" })
+```
+
+Where `[command]` and `[args]` are the values determined in the routing step.
 </step>
 
 </process>

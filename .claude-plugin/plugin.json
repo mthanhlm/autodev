@@ -1,6 +1,6 @@
 {
   "name": "autodev",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Lean workflow plugin for scope-driven development - plan, execute, verify without the overhead",
   "author": {
     "name": "autonxt",
