@@ -104,14 +104,14 @@ After all waves complete:
 </step>
 
 <step name="done">
-⚠ **Clear context before execution: `/clear`**
-
 Report completion:
 ```
 ✅ Phase {n} executed
 
 Plans completed: {count}/{total}
-Next: `/autodev-verify {n}` for verification
+
+⚠ Clear context before verify: /clear
+Then run: /autodev-verify {n}
 ```
 </step>
 

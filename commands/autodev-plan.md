@@ -126,8 +126,6 @@ Update PHASES.md:
 <step name="done">
 Report:
 ```
-⚠ Clear context before planning: /clear
-
 ✅ Phase {n} planned: {plan_count} plans created
 
 ## Plans
@@ -137,7 +135,8 @@ Report:
 | {n}-01 | 1 | ... | ... |
 | {n}-02 | 1 | ... | ... |
 
-Next: `/autodev-execute {n}` to execute
+⚠ Clear context before execute: /clear
+Then run: /autodev-execute {n}
 ```
 </step>
 

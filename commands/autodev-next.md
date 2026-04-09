@@ -86,12 +86,6 @@ If current phase is complete and next phase exists:
 </step>
 
 <step name="show_and_execute">
-**Important:** Recommend `/clear` before advancing to keep context fresh:
-
-```
-⚠ Clear context before proceeding: /clear
-```
-
 Display the determination:
 
 ```
@@ -101,6 +95,7 @@ Display the determination:
 **Next step:** `/autodev-[command] [args]`
   [One-line explanation]
 
+⚠ Clear context before proceeding: /clear
 ```
 
 Then immediately invoke the determined command via SlashCommand.

@@ -114,15 +114,14 @@ Options:
 </step>
 
 <step name="done">
-⚠ **Clear context before verification: `/clear`**
-
 Report final status:
 
 ```
 ✅ Phase {n} verified and complete
    UAT: {passed}/{total} passed
 
-Next: `/autodev-next` for next step
+⚠ Clear context before next step: /clear
+Then run: /autodev-next
 ```
 </step>
 

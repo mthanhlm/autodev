@@ -156,14 +156,13 @@ Update ROADMAP.md if it exists, or create as summary.
 <step name="done">
 Report:
 ```
-⚠ Clear context first: /clear
-
 ✅ Scope created: {name}
 📁 .autodev/SCOPE.md
 📁 .autodev/PHASES.md
 📁 .autodev/STATE.md
 
-Next: `/autodev-plan 1` to plan the first phase
+⚠ Clear context before planning: /clear
+Then run: /autodev-plan 1
 ```
 </step>
 
