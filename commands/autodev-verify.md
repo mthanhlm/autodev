@@ -114,6 +114,8 @@ Options:
 </step>
 
 <step name="done">
+⚠ **Clear context before verification: `/clear`**
+
 Report final status:
 
 ```

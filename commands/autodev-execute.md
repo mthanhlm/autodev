@@ -104,6 +104,8 @@ After all waves complete:
 </step>
 
 <step name="done">
+⚠ **Clear context before execution: `/clear`**
+
 Report completion:
 ```
 ✅ Phase {n} executed

@@ -86,6 +86,12 @@ If current phase is complete and next phase exists:
 </step>
 
 <step name="show_and_execute">
+**Important:** Recommend `/clear` before advancing to keep context fresh:
+
+```
+⚠ Clear context before proceeding: /clear
+```
+
 Display the determination:
 
 ```

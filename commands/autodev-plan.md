@@ -126,6 +126,8 @@ Update PHASES.md:
 <step name="done">
 Report:
 ```
+⚠ Clear context before planning: /clear
+
 ✅ Phase {n} planned: {plan_count} plans created
 
 ## Plans

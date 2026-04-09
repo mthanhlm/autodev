@@ -156,6 +156,8 @@ Update ROADMAP.md if it exists, or create as summary.
 <step name="done">
 Report:
 ```
+⚠ Clear context first: /clear
+
 ✅ Scope created: {name}
 📁 .autodev/SCOPE.md
 📁 .autodev/PHASES.md
