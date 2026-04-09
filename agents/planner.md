@@ -1,7 +1,7 @@
 ---
 description: Creates executable XML plans for phase execution
 model: sonnet
-color: "#10B981"
+color: green
 tools:
   - Read
   - Write

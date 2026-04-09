@@ -1,7 +1,7 @@
 ---
 description: Verifies phase completion against must-haves and requirements
 model: sonnet
-color: "#8B5CF6"
+color: purple
 tools:
   - Read
   - Write

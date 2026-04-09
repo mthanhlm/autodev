@@ -1,7 +1,7 @@
 ---
 description: Executes phase plans in fresh context with wave parallelization
 model: sonnet
-color: "#3B82F6"
+color: blue
 tools:
   - Read
   - Write
