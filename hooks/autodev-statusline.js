@@ -42,7 +42,48 @@ function getStatuslineOutput() {
   return `\x1b[2m${cwd}\x1b[0m${ctx}`;
 }
 
-const output = getStatuslineOutput();
-if (output) {
-  process.stdout.write(output);
-}
+// Read stdin for context window data (Claude Code passes this via stdin)
+let input = '';
+process.stdin.setEncoding('utf8');
+process.stdin.on('data', chunk => input += chunk);
+process.stdin.on('end', () => {
+  try {
+    if (input.trim()) {
+      const data = JSON.parse(input);
+      const remaining = data?.context_window?.remaining_percentage;
+      if (remaining != null) {
+        // Calculate usable context and output
+        const AUTO_COMPACT_BUFFER_PCT = 16.5;
+        const usableRemaining = Math.max(0, ((remaining - AUTO_COMPACT_BUFFER_PCT) / (100 - AUTO_COMPACT_BUFFER_PCT)) * 100);
+        const used = Math.max(0, Math.min(100, Math.round(100 - usableRemaining)));
+
+        const filled = Math.floor(used / 10);
+        const bar = '█'.repeat(filled) + '░'.repeat(10 - filled);
+        const dir = data?.workspace?.current_dir || process.cwd();
+        const cwd = path.basename(dir) || dir;
+
+        let ctx = '';
+        if (used < 50) {
+          ctx = ` \x1b[2m│ ctx:\x1b[0m \x1b[32m${bar} ${used}%\x1b[0m`;
+        } else if (used < 65) {
+          ctx = ` \x1b[2m│ ctx:\x1b[0m \x1b[33m${bar} ${used}%\x1b[0m`;
+        } else if (used < 80) {
+          ctx = ` \x1b[2m│ ctx:\x1b[0m \x1b[38;5;208m${bar} ${used}%\x1b[0m`;
+        } else {
+          ctx = ` \x1b[2m│ ctx:\x1b[0m \x1b[5;31m💀 ${bar} ${used}%\x1b[0m`;
+        }
+
+        process.stdout.write(`\x1b[2m${cwd}\x1b[0m${ctx}`);
+        return;
+      }
+    }
+  } catch (e) {
+    // Fall back to env var approach
+  }
+
+  // Fall back: use env var or cwd only
+  const output = getStatuslineOutput();
+  if (output) {
+    process.stdout.write(output);
+  }
+});
