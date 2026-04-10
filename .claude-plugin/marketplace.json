@@ -4,19 +4,19 @@
     "name": "autonxt"
   },
   "metadata": {
-    "description": "Lean workflow plugin for scope-driven development - plan, execute, and verify without the overhead"
+    "description": "Lean workflow plugin for agile-driven development - plan, execute, and verify without the overhead"
   },
   "plugins": [
     {
       "name": "autodev",
       "source": "./",
-      "description": "Lean workflow plugin for scope-driven development. Scope → Phase workflow without project/milestone hierarchy or auto-commit.",
+      "description": "Lean workflow plugin for agile-driven development. Epic → Story workflow with vertical slices, manual commits, and wave-based parallel execution.",
       "version": "0.1.0",
       "author": {
         "name": "autonxt",
         "url": "https://github.com/autonxt/autodev"
       },
-      "keywords": ["workflow", "planning", "execution", "scope", "phase", "context-engineering"]
+      "keywords": ["workflow", "planning", "execution", "epic", "story", "task", "agile", "vertical-slices"]
     }
   ]
 }

@@ -1,5 +1,5 @@
 ---
-name: autodev:statusline-setup
+name: autodev-statusline-setup
 description: Configure the autodev statusline in Claude Code settings
 allowed-tools:
   - Read
@@ -8,12 +8,12 @@ allowed-tools:
 ---
 
 <objective>
-Register the autodev statusline hook in Claude Code settings.json so it displays scope, phase, and progress information in the status bar. Always uses the latest version from the global plugin installation.
+Register the autodev statusline hook in Claude Code settings.json so it displays epic, story, and progress information in the status bar. Always uses the latest version from the global plugin installation.
 </objective>
 
 <process>
 
-<step name="detect_global_plugin_path">
+<step name="detect_global_plugin_path"
 The global plugin is always at `~/.claude/plugins/cache/autodev/autodev/<version>/`. Find the latest version directory.
 
 ```bash
@@ -21,7 +21,7 @@ ls -d ~/.claude/plugins/cache/autodev/autodev/*/ 2>/dev/null | sort -V | tail -1
 ```
 </step>
 
-<step name="build_statusline_command">
+<step name="build_statusline_command"
 Use the global plugin path (latest version):
 ```bash
 AUTODEV_PLUGIN_DIR="$(ls -d ~/.claude/plugins/cache/autodev/autodev/*/ 2>/dev/null | sort -V | tail -1 | tr -d '/')"
@@ -30,14 +30,14 @@ STATUSLINE_CMD="node $(eval echo $STATUSLINE_PATH)"
 ```
 </step>
 
-<step name="read_settings">
+<step name="read_settings"
 Read the current Claude Code settings:
 ```bash
 cat ~/.claude/settings.json
 ```
 </step>
 
-<step name="update_settings">
+<step name="update_settings"
 If statusLine already exists in settings.json:
 - Replace the existing `command` value with the new statusline path from the global plugin
 
@@ -47,11 +47,21 @@ If statusLine does not exist:
 Use Read → Edit to preserve all other settings.
 </step>
 
-<step name="verify">
+<step name="verify"
 Find latest version and verify syntax:
 ```bash
 AUTODEV_PLUGIN_DIR="$(ls -d ~/.claude/plugins/cache/autodev/autodev/*/ 2>/dev/null | sort -V | tail -1 | tr -d '/')"
 node -c "$AUTODEV_PLUGIN_DIR/hooks/autodev-statusline.js" && echo "✓ Syntax OK"
+```
+</step>
+
+<step name="done"
+Report:
+```
+✅ Statusline configured
+
+The statusline shows context window usage and current directory.
+Restart Claude Code to see changes.
 ```
 </step>
 

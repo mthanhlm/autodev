@@ -1,5 +1,5 @@
 ---
-name: autodev:fast
+name: autodev-fast
 description: Execute a trivial task inline — no planning, no subagents, just do it
 argument-hint: "<task description>"
 allowed-tools:
@@ -12,12 +12,12 @@ allowed-tools:
 ---
 
 <objective>
-Execute a trivial task directly in the current context without spawning subagents or generating PLAN.md files. For tasks too small to justify planning overhead: typo fixes, config changes, small refactors, simple additions.
+Execute a trivial task directly in the current context without spawning subagents or generating TASK.md files. For tasks too small to justify planning overhead: typo fixes, config changes, small refactors, simple additions.
 </objective>
 
 <process>
 
-<step name="parse_task">
+<step name="parse_task"
 Parse `$ARGUMENTS` for the task description.
 
 If empty, use AskUserQuestion:
@@ -26,7 +26,7 @@ What's the quick fix? (one sentence)
 ```
 </step>
 
-<step name="scope_check">
+<step name="scope_check"
 **Before doing anything, verify this is actually trivial.**
 
 A task is trivial if it can be completed in:
@@ -42,22 +42,22 @@ This looks like it needs planning. Use `/autodev-plan` instead.
 And stop.
 </step>
 
-<step name="execute_inline">
+<step name="execute_inline"
 Do the work directly:
 
 1. Read the relevant file(s)
 2. Make the change(s)
 3. Verify the change works (run existing tests if applicable, or quick sanity check)
 
-**No PLAN.md.** Just do it.
+**No TASK.md.** Just do it.
 </step>
 
-<step name="log_to_state">
+<step name="log_to_state"
 If `.autodev/STATE.md` exists, append to the "Quick Tasks" section.
 If the section doesn't exist, skip silently.
 </step>
 
-<step name="done">
+<step name="done"
 Report completion:
 
 ```
@@ -72,7 +72,7 @@ No next-step suggestions. No workflow routing. Just done.
 
 <guardrails>
 - NEVER spawn a Task/subagent — this runs inline
-- NEVER create PLAN.md or SUMMARY.md files
+- NEVER create TASK.md or SUMMARY.md files
 - NEVER run research or plan-checking
 - If the task takes more than 3 file edits, STOP and redirect to `/autodev-plan`
 </guardrails>

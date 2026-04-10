@@ -1,19 +1,18 @@
 ---
 name: autodev
-description: Universal autodev entry point — creates scope, advances workflow, or routes requests
-argument-hint: "<description of what you want to do (optional)>"
+description: Universal autodev entry point — creates epic, advances workflow, or routes requests
+argument-hint: "<what you want to do (optional)>"
 allowed-tools:
   - Read
   - Bash
   - AskUserQuestion
   - Glob
-  - SlashCommand
 ---
 
 <objective>
 Single entry point for everything autodev. When called:
-- **No arguments + no scope** → Creates a new scope
-- **No arguments + has scope** → Detects current state and advances to the next logical step
+- **No arguments + no epic** → Creates a new epic
+- **No arguments + has epic** → Detects current state and advances to the next logical step
 - **With arguments** → Analyzes intent and routes to the appropriate command
 
 This is the only autodev command most users need.
@@ -30,16 +29,16 @@ Check if `.autodev/` directory exists:
 If missing:
 AskUserQuestion({
   questions: [{
-    question: "No autodev project found. Create a new scope to get started?",
-    header: "New Project",
+    question: "No autodev project found. Create a new epic to get started?",
+    header: "New Epic",
     options: [
-      { label: "Create scope", description: "Set up autodev scope for this project" },
+      { label: "Create epic", description: "Set up autodev epic for this project" },
       { label: "Abort", description: "Cancel and do nothing" }
     ]
   }]
 })
 
-If user confirms "Create scope" → Invoke `/autodev-scope` and exit.
+If user confirms "Create epic" → Invoke `/autodev-epic` and exit.
 If user "Abort" → exit.
 
 If exists, proceed to step: check_input
@@ -55,25 +54,25 @@ If `$ARGUMENTS` is provided:
 
 <step name="auto_advance">
 Read project state:
-- `.autodev/SCOPE.md` — scope definition
-- `.autodev/PHASES.md` — phase breakdown
+- `.autodev/EPIC.md` — epic definition
+- `.autodev/STORIES.md` — story breakdown
 - `.autodev/STATE.md` — current state
 
 **Safety gates:**
 - If `.autodev/.continue-here.md` exists → Hard stop. Show message to resolve first.
-- If STATE.md has `status: error` or `status: failed` → Hard stop. Show message to resolve.
+- If STATE.md has `status: error` or `status: failed` → Hard stop with clear error display.
 
 **Determine next action:**
 
 | State | Next Action |
 |-------|-------------|
-| No phases defined | `/autodev-scope --add-phase` |
-| Phases exist, no current phase | `/autodev-plan 1` |
-| Current phase, no plans | `/autodev-plan <current_phase>` |
-| Plans exist, not all executed | `/autodev-execute <current_phase>` |
-| All plans executed | `/autodev-verify <current_phase>` |
-| Phase complete, more phases | `/autodev-plan <next_phase>` |
-| Project complete | Show completion summary |
+| No stories defined | `/autodev-story` |
+| Stories exist, no current story | `/autodev-plan 1` |
+| Current story, no plans | `/autodev-plan <story_number>` |
+| Tasks exist, not all executed | `/autodev-execute <story_number>` |
+| All tasks executed | `/autodev-verify <story_number>` |
+| Story complete, more stories | `/autodev-plan <next_story>` |
+| Epic complete | Show completion summary |
 
 **Ask for confirmation:**
 AskUserQuestion({
@@ -98,13 +97,13 @@ Analyze `$ARGUMENTS` against these routing rules. Apply the **first matching** r
 
 | If the text describes... | Route to | Why |
 |--------------------------|----------|-----|
-| Starting fresh, new project, setup | `/autodev-scope` | Needs scope creation |
+| Starting fresh, new project, setup | `/autodev-epic` | Needs epic creation |
 | Small trivial task: typo, config, simple fix | `/autodev-fast` | No planning needed |
 | Progress check, "where am I", status | `/autodev-progress` | Status inquiry |
 | Complex task: refactor, multi-file, architecture | `/autodev-plan` | Needs planning cycle |
-| Planning a specific phase | `/autodev-plan <phase>` | Direct planning |
-| Executing a phase | `/autodev-execute <phase>` | Direct execution |
-| Review, verification | `/autodev-verify` | Needs verification |
+| Planning a specific story | `/autodev-plan <story>` | Direct planning |
+| Executing a story | `/autodev-execute <story>` | Direct execution |
+| Review, verification, testing | `/autodev-verify` | Needs verification |
 | Health check, diagnose | `/autodev-health` | Diagnostics |
 | Anything else | Use the most fitting above | Best effort routing |
 
@@ -139,8 +138,8 @@ If user "Abort" → exit.
 </process>
 
 <success_criteria>
-- [ ] No scope → creates scope
-- [ ] Has scope, no args → auto-detects and advances
+- [ ] No epic → creates epic
+- [ ] Has epic, no args → auto-detects and advances
 - [ ] Has args → routes to appropriate command
 - [ ] Confirmation before executing
 - [ ] Single command for everything

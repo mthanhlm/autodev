@@ -1,6 +1,6 @@
 ---
-name: autodev:progress
-description: Show current project state, phase progress, and next steps
+name: autodev-progress
+description: Show current project state, story progress, and next steps
 allowed-tools:
   - Read
   - Bash
@@ -8,12 +8,12 @@ allowed-tools:
 ---
 
 <objective>
-Show where the project currently stands: scope status, phase progress, and recommended next action.
+Show where the project currently stands: epic status, story progress, and recommended next action.
 </objective>
 
 <process>
 
-<step name="check_project">
+<step name="check_project"
 Check if `.autodev/` directory exists:
 ```bash
 [ -d ".autodev" ] && echo "exists" || echo "missing"
@@ -21,35 +21,35 @@ Check if `.autodev/` directory exists:
 
 If missing:
 ```
-No autodev project found. Run `/autodev-scope` to get started.
+No autodev project found. Run `/autodev-epic` to get started.
 ```
 Exit.
 </step>
 
-<step name="read_state">
+<step name="read_state"
 Read:
-- `.autodev/SCOPE.md` — scope definition
-- `.autodev/PHASES.md` — phase status
+- `.autodev/EPIC.md` — epic definition
+- `.autodev/STORIES.md` — story status
 - `.autodev/STATE.md` — current state
 </step>
 
-<step name="display_progress">
+<step name="display_progress"
 ```markdown
 ## Autodev Progress
 
-**Scope:** {scope name}
+**Epic:** {epic name}
 **Status:** {status}
 
-### Phases
+### Stories
 
-| Phase | Status | Plans | Summary |
+| Story | Status | Tasks | Summary |
 |-------|--------|-------|---------|
 | 1 | [x] planned | 2/2 | ✓ |
 | 2 | [ ] executing | 0/2 | - |
 | 3 | [ ] planned | - | - |
 
 ### Current State
-- **Current Phase:** {N}
+- **Current Story:** {N}
 - **Status:** {active/executing/verifying}
 - **Last Activity:** {date}
 ```
@@ -57,24 +57,25 @@ Read:
 If `.autodev/.continue-here.md` exists:
 ```
 ⚠ Unresolved checkpoint found
-  Run `/autodev-next` to resume
+  Run /autodev to resume
 ```
 </step>
 
-<step name="suggest_next">
+<step name="suggest_next"
 Based on state, suggest next command:
 
-- No phases → `/autodev-scope`
-- Phase exists, no plans → `/autodev-plan {N}`
-- Plans exist, no execution → `/autodev-execute {N}`
-- Phase executing → `/autodev-execute {N}` (continue)
-- Phase complete → `/autodev-next`
+- No stories → `/autodev-epic`
+- Story exists, no tasks → `/autodev-plan {N}`
+- Tasks exist, no execution → `/autodev-execute {N}`
+- Story executing → `/autodev-execute {N}` (continue)
+- Story complete, more stories → `/autodev-plan {next}`
+- Epic complete → `/autodev-cleanup` (cleanup option)
 </step>
 
 </process>
 
 <success_criteria>
-- [ ] Project state correctly displayed
-- [ ] Phase progress shown
+- [ ] Epic state correctly displayed
+- [ ] Story progress shown
 - [ ] Next action suggested
 </success_criteria>

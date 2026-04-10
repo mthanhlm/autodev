@@ -1,7 +1,7 @@
 ---
-name: autodev:scope
-description: Create a new scope from an existing repo
-argument-hint: "<scope name> [--add-phase] [--from-codebase]"
+name: autodev-epic
+description: Create a new epic from an existing repo
+argument-hint: "<epic name> [--add-story] [--from-codebase]"
 allowed-tools:
   - Read
   - Write
@@ -12,17 +12,17 @@ allowed-tools:
 ---
 
 <objective>
-Create a new scope definition for working in an existing repository. Asks about what needs to be built, breaks it into phases, creates SCOPE.md and PHASES.md.
+Create a new epic definition for working in an existing repository. An epic is the overall goal — what we're building. Ask what needs to be built, break it into stories (vertical slices), create EPIC.md and STORIES.md.
 </objective>
 
 <process>
 
 <step name="parse_args">
-Parse `$ARGUMENTS` for scope name.
+Parse `$ARGUMENTS` for epic name.
 
 If empty, use AskUserQuestion:
 ```
-What is this scope about? (brief description of what you're building)
+What is this epic about? (brief description of what you're building)
 ```
 </step>
 
@@ -34,9 +34,9 @@ Check if `.autodev/` directory already exists:
 
 If exists, use AskUserQuestion to confirm:
 ```
-Existing autodev project found. Create a new scope anyway, or abort?
+Existing autodev project found. Create a new epic anyway, or abort?
 ```
-Options: [Create new scope] [Abort]
+Options: [Create new epic] [Abort]
 
 If user says abort, exit.
 </step>
@@ -80,20 +80,24 @@ Any constraints? (tech preferences, performance, license, etc.)
 ```
 </step>
 
-<step name="break_into_phases">
-Based on the gathered requirements, propose 2-4 phases as vertical slices.
+<step name="break_into_stories">
+Based on the gathered requirements, propose 2-4 stories as vertical slices.
+
+**Vertical slice pattern:** Each story is a complete feature including model + API + UI where applicable.
 
 Use AskUserQuestion to confirm/adjust:
 ```
-## Proposed Phases
+## Proposed Stories
 
-1. **Phase name** — what it delivers
-2. **Phase name** — what it delivers
+1. **Story name** — what it delivers (vertical slice)
+2. **Story name** — what it delivers
 ...
 
-Add, remove, or reorder phases as needed.
+Stories are vertical slices. Each should be independently testable and deliver user value.
+
+Add, remove, or reorder stories as needed.
 ```
-Options: [Accept these phases] [Modify]
+Options: [Accept these stories] [Modify]
 
 If user says modify, ask what to change.
 </step>
@@ -102,12 +106,12 @@ If user says modify, ask what to change.
 Create `.autodev/` directory structure:
 
 ```bash
-mkdir -p .autodev/phases
+mkdir -p .autodev/stories
 ```
 
-Create SCOPE.md with the user's actual answers:
+Create EPIC.md with the user's actual answers:
 ```markdown
-# Scope: {scope_name}
+# Epic: {epic_name}
 
 **Created:** {date}
 **Status:** active
@@ -125,28 +129,30 @@ Create SCOPE.md with the user's actual answers:
 {user's constraints}
 ```
 
-Create PHASES.md:
+Create STORIES.md:
 ```markdown
-# Phases
+# Stories
 
-## Phase 1: {name}
+## Story 1: {name}
 Status: pending
+What it delivers: {brief description of vertical slice}
 
-## Phase 2: {name}
+## Story 2: {name}
 Status: pending
+What it delivers: {brief description}
 
-... (for each phase)
+... (for each story)
 ```
 
 Create STATE.md:
 ```markdown
 # State
 
-**Current Phase:** 1
+**Current Story:** 1
 **Status:** planning
 
 ## Decisions
-- {key decisions made during scope creation}
+- {key decisions made during epic creation}
 
 ## Notes
 - {additional notes}
@@ -156,21 +162,23 @@ Create STATE.md:
 <step name="done">
 Report:
 ```
-✅ Scope created: {name}
-📁 .autodev/SCOPE.md
-📁 .autodev/PHASES.md
-📁 .autodev/STATE.md
+✅ Epic created: {name}
 
-⚠ Clear context before planning: /clear
-Then run: /autodev-plan 1
+📁 .autodev/EPIC.md       — Epic definition
+📁 .autodev/STORIES.md    — Story breakdown
+📁 .autodev/STATE.md       — Current state
+
+Next: /autodev-plan 1
+
+Tip: Run /clear before planning to start fresh.
 ```
 </step>
 
 </process>
 
 <success_criteria>
-- [ ] SCOPE.md created with goal, must-haves, out-of-scope
-- [ ] PHASES.md created with phase breakdown
+- [ ] EPIC.md created with goal, must-haves, out-of-scope
+- [ ] STORIES.md created with story breakdown (vertical slices)
 - [ ] STATE.md created with initial state
-- [ ] User understands next step
+- [ ] User understands next step is /autodev-plan 1
 </success_criteria>

@@ -1,7 +1,7 @@
 ---
-name: autodev:verify
-description: Manual user acceptance testing after phase execution
-argument-hint: "<phase-number>"
+name: autodev-verify
+description: Manual user acceptance testing after story execution
+argument-hint: "<story-number>"
 allowed-tools:
   - Read
   - Write
@@ -11,43 +11,43 @@ allowed-tools:
 ---
 
 <objective>
-Present phase verification items for human testing. After execution, all automated checks pass but only humans can verify the feature actually works as expected.
+Present story verification items for human testing. After execution, all automated checks pass but only humans can verify the feature actually works as expected.
 </objective>
 
 <process>
 
-<step name="parse_args">
-Parse `$ARGUMENTS` for phase number.
+<step name="parse_args"
+Parse `$ARGUMENTS` for story number.
 </step>
 
-<step name="load_verification_data">
-Read from phase directory:
-- All PLAN.md files (understand what was promised)
+<step name="load_verification_data"
+Read from story directory:
+- All TASK.md files (understand what was promised)
 - All SUMMARY.md files (what was delivered)
-- SCOPE.md (original must-haves)
+- EPIC.md (original must-haves)
 
-Extract must_haves from plans.
+Extract must_haves from tasks.
 </step>
 
-<step name="present_testable_deliverables">
-For each plan, extract testable items:
+<step name="present_testable_deliverables"
+For each task, extract testable items:
 
 ```markdown
-## Phase {N}: {Name}
+## Story {N}: {Name}
 
 ### Testable Deliverables
 
 1. **{Deliverable name}**
    - **What should work:** {description}
    - **How to test:** {steps}
-   
+
 2. ...
 ```
 
 Group by functional area.
 </step>
 
-<step name="human_verification_loop">
+<step name="human_verification_loop"
 For each item, use AskUserQuestion SEPARATELY:
 
 ```
@@ -67,12 +67,12 @@ Describe the issue:
 Capture issue description.
 </step>
 
-<step name="create_uat_report">
-Create `{phase}-UAT.md`:
+<step name="create_uat_report"
+Create `{story}-UAT.md`:
 
 ```markdown
 ---
-phase: {N}-{name}
+story: {N}-{name}
 status: {passed|partial|failed}
 started: {date}
 updated: {date}
@@ -101,7 +101,7 @@ updated: {date}
 </step>
 
 <step name="handle_results">
-If all pass → Set phase status to "complete" in PHASES.md, report success.
+If all pass → Set story status to "complete" in STORIES.md, report success.
 
 If some fail:
 ```
@@ -109,7 +109,7 @@ If some fail:
 
 Options:
 1. Fix and re-verify (runs inline fix)
-2. Create gap plans for /autodev-plan
+2. Create gap tasks for /autodev-plan
 3. Skip (mark as known issues)
 ```
 </step>
@@ -118,11 +118,13 @@ Options:
 Report final status:
 
 ```
-✅ Phase {n} verified and complete
-   UAT: {passed}/{total} passed
+✅ Story {n} verified and complete
 
-⚠ Clear context before next step: /clear
-Then run: /autodev-next
+UAT Results: {passed}/{total} passed
+
+Next: /autodev (to advance to next story)
+
+If all stories complete, run /autodev-cleanup when ready.
 ```
 </step>
 

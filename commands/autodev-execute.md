@@ -1,7 +1,7 @@
 ---
-name: autodev:execute
-description: Execute all plans in a phase with wave-based parallelization
-argument-hint: "<phase-number> [--wave N] [--interactive]"
+name: autodev-execute
+description: Execute all tasks in a story with wave-based parallelization
+argument-hint: "<story-number> [--wave N] [--interactive]"
 allowed-tools:
   - Read
   - Write
@@ -14,110 +14,119 @@ allowed-tools:
 ---
 
 <objective>
-Execute all plans in a phase using wave-based parallel execution. Each subagent gets fresh context for execution.
+Execute all tasks in a story using wave-based parallel execution. Each subagent gets fresh context for execution.
 </objective>
 
 <process>
 
 <step name="parse_args">
-Parse `$ARGUMENTS` for phase number.
+Parse `$ARGUMENTS` for story number.
 
 Optional flags:
 - `--wave N` — Execute only Wave N
 - `--interactive` — Execute inline with user checkpoints between tasks
 </step>
 
-<step name="discover_plans">
-Find all PLAN.md files for the phase:
+<step name="discover_tasks">
+Find all TASK.md files for the story:
 
 ```bash
-ls .autodev/phases/{phase}-*/{phase}-*-PLAN.md 2>/dev/null
+ls .autodev/stories/{story}-*/{story}-*-TASK.md 2>/dev/null
 ```
 
-Skip plans that already have SUMMARY.md.
+Skip tasks that already have SUMMARY.md.
 
-Group plans by wave number from frontmatter.
+Group tasks by wave number from frontmatter.
 </step>
 
 <step name="update_state">
-Update STATE.md for phase start:
+Update STATE.md for story start:
 - Set **Status:** to "executing"
+- Set **Current Story:** to story number if not set
 - Record start time
 </step>
 
-<step name="execute_waves">
+<step name="execute_waves>
 For each wave:
 
 1. **Show what's being built:**
    ```
    ## Wave {N}
-   
-   **{Plan ID}: {Plan Name}**
+
+   **{Task ID}: {Task Name}**
    {what this builds}
    ```
 
 2. **If `--interactive` flag present:**
-   Execute plans sequentially inline with user checkpoints.
+   Execute tasks sequentially inline with user checkpoints.
 
-   For each plan:
-   a. Show plan to user: Execute / Review / Skip
-   b. If "Review first": Show task breakdown
-   c. If "Execute": Read PLAN.md and execute tasks inline
-   d. After each task: Brief pause for user intervention
+   For each task:
+   a. Show task to user: Execute / Review / Skip
+   b. If "Review first": Show subtask breakdown
+   c. If "Execute": Read TASK.md and execute subtasks inline
+   d. After each subtask: Brief pause for user intervention
 
 3. **If normal mode:**
-   Execute plans **sequentially** (not in parallel). Each Task() call blocks until complete:
+   Execute tasks **sequentially** (not in parallel). Each Task() call blocks until complete:
 
-   - Spawn executor for Plan A, wait for completion
-   - Spawn executor for Plan B, wait for completion
+   - Spawn executor for Task A, wait for completion
+   - Spawn executor for Task B, wait for completion
    - Etc.
 
-   **Why sequential blocking:** Keeps main context synchronized, prevents user from typing mid-execution, ensures clean state for each plan.
+   **Why sequential blocking:** Keeps main context synchronized, prevents user from typing mid-execution, ensures clean state for each task.
 
-   **Wave grouping still applies:** Wave 1 plans run first, then Wave 2, etc. Only the **within-wave** execution is sequential.
+   **Wave grouping still applies:** Wave 1 tasks run first, then Wave 2, etc. Only the **within-wave** execution is sequential.
 </step>
 
-<step name="handle_results">
-After each plan completes:
+<step name="handle_results>
+After each task completes:
 - Check SUMMARY.md exists
-- Spot-check git commits (if any)
-- Report completion
+- Spot-check git status for modified files
+- Report completion with file summary
 
-If any plan failed:
+If any task failed, offer specific recovery options:
 ```
-⚠ Plan {id} failed
+⚠ Task {id} failed
 
-Options:
-1. Retry plan
-2. Continue with remaining plans
-3. Stop and investigate
+This task failed. Here's what to do:
+
+1. **Retry** — Run this task again (might succeed if it was a transient issue)
+2. **Skip** — Mark as skipped, continue with remaining tasks
+3. **Debug** — Exit execution and investigate
+
+To retry: /autodev-execute {story} --wave {current_wave}
+To skip: Say "skip" and I'll continue
+To debug: Say "debug" and I'll show you the error details
 ```
+
+For each option, be specific about what will happen.
 </step>
 
 <step name="aggregate_results">
 After all waves complete:
 
 ```markdown
-## Phase {X} Execution Complete
+## Story {X} Execution Complete
 
-**Waves:** {N} | **Plans:** {M}/{total} complete
+**Waves:** {N} | **Tasks:** {M}/{total} complete
 
-| Wave | Plans | Status |
+| Wave | Tasks | Status |
 |------|-------|--------|
-| 1 | plan-01, plan-02 | ✓ |
-| 2 | plan-03 | ✓ |
+| 1 | task-01, task-02 | ✓ |
+| 2 | task-03 | ✓ |
 ```
 </step>
 
 <step name="done">
 Report completion:
 ```
-✅ Phase {n} executed
+✅ Story {n} executed
 
-Plans completed: {count}/{total}
+Tasks completed: {count}/{total}
 
-⚠ Clear context before verify: /clear
-Then run: /autodev-verify {n}
+Next: /autodev-verify {n}
+
+Tip: Run /clear before verifying to start fresh.
 ```
 </step>
 
@@ -130,8 +139,8 @@ Then run: /autodev-verify {n}
 </guardrails>
 
 <success_criteria>
-- [ ] All plans executed (or all incomplete plans)
-- [ ] SUMMARY.md created for each plan
+- [ ] All tasks executed (or all incomplete tasks)
+- [ ] SUMMARY.md created for each task
 - [ ] STATE.md updated with execution results
 - [ ] No auto-commits (manual commit only reported)
 </success_criteria>

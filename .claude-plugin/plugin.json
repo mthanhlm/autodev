@@ -1,14 +1,14 @@
 {
   "name": "autodev",
-  "version": "0.4.3",
-  "description": "Lean workflow plugin for scope-driven development - plan, execute, verify without the overhead",
+  "version": "0.5.0",
+  "description": "Lean workflow plugin for agile-driven development - epic, stories, tasks without the overhead",
   "author": {
     "name": "autonxt",
     "url": "https://github.com/autonxt/autodev"
   },
   "repository": "https://github.com/autonxt/autodev",
   "license": "MIT",
-  "keywords": ["workflow", "planning", "execution", "scope", "phase"],
+  "keywords": ["workflow", "planning", "execution", "epic", "story", "task", "agile"],
   "statusline": {
     "script": "node hooks/autodev-statusline.js"
   }

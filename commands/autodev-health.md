@@ -1,5 +1,5 @@
 ---
-name: autodev:health
+name: autodev-health
 description: Validate .autodev directory integrity and auto-repair
 argument-hint: "[--repair]"
 allowed-tools:
@@ -14,57 +14,57 @@ Validate `.autodev/` directory integrity. Check all required files exist, report
 
 <process>
 
-<step name="check_structure">
+<step name="check_structure"
 Check required files exist:
-- `.autodev/SCOPE.md`
-- `.autodev/PHASES.md`
+- `.autodev/EPIC.md`
+- `.autodev/STORIES.md`
 - `.autodev/STATE.md`
 
 Report missing files.
 </step>
 
-<step name="validate_content">
+<step name="validate_content"
 For each file:
 
-**SCOPE.md:** Check required sections:
+**EPIC.md:** Check required sections:
 - [ ] Goal defined
 - [ ] Must-haves listed
 - [ ] Out of scope listed
 
-**PHASES.md:** Check:
-- [ ] At least one phase defined
-- [ ] Each phase has name
+**STORIES.md:** Check:
+- [ ] At least one story defined
+- [ ] Each story has name
 
 **STATE.md:** Check:
-- [ ] Has scope reference
-- [ ] Has current phase
+- [ ] Has epic reference
+- [ ] Has current story
 - [ ] Status is valid value
 </step>
 
-<step name="check_phase_consistency">
-For each phase directory in `.autodev/phases/`:
-- Check phase number matches directory name
-- Check for orphaned files (no matching entry in PHASES.md)
-- Check for missing summaries (plan exists but no summary)
+<step name="check_story_consistency"
+For each story directory in `.autodev/stories/`:
+- Check story number matches directory name
+- Check for orphaned files (no matching entry in STORIES.md)
+- Check for missing summaries (task exists but no summary)
 </step>
 
-<step name="display_results">
+<step name="display_results"
 ```markdown
 ## Autodev Health Check
 
 ### Structure
-✅ SCOPE.md present
-✅ PHASES.md present
+✅ EPIC.md present
+✅ STORIES.md present
 ✅ STATE.md present
 
 ### Content
-✅ Scope has goal
-✅ Scope has must-haves
-✅ Phases defined
+✅ Epic has goal
+✅ Epic has must-haves
+✅ Stories defined
 
-### Phase Consistency
-✅ Phase 1: consistent
-⚠ Phase 3: missing summary for plan 03-02
+### Story Consistency
+✅ Story 1: consistent
+⚠ Story 3: missing summary for task 03-02
 
 ### Issues Found
 {list of issues}
@@ -75,12 +75,12 @@ If `--repair` flag present:
 - Report repairs made
 </step>
 
-<step name="done">
+<step name="done"
 If all checks pass:
 ```
 ✅ Autodev health check passed
 
-.no issues found.
+No issues found.
 ```
 
 If issues found:
@@ -96,6 +96,6 @@ Run `/autodev-health --repair` to auto-repair.
 <success_criteria>
 - [ ] All required files present
 - [ ] Content validated
-- [ ] Phase consistency verified
+- [ ] Story consistency verified
 - [ ] Issues reported clearly
 </success_criteria>

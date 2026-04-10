@@ -1,17 +1,17 @@
 # Autodev
 
-Lean workflow plugin for scope-driven development. Plan, execute, and verify without the overhead.
+Lean workflow plugin for agile-driven development. Plan, execute, and verify without the overhead.
 
 ## What's Different from GSD
 
 | GSD | Autodev |
 |-----|---------|
-| Project → Milestone → Phase | Scope → Phase only |
+| Project → Milestone → Phase | Epic → Story only |
 | Auto-commit by AI | Manual commit only (company policy) |
 | 25+ agents | 3 essential agents |
 | Heavy discuss-phase flow | Inline discuss in plan |
 | Complex multi-tool dependency | Simple command-based workflow |
-| Workstreams, workspaces | Single scope |
+| Workstreams, workspaces | Single epic |
 
 ## Installation
 
@@ -37,66 +37,79 @@ cp -r /path/to/autodev ~/.claude/plugins/cache/autodev/autodev
 
 | Command | Purpose |
 |---------|---------|
-| `/autodev-scope` | Create scope from existing repo |
-| `/autodev-next` | Auto-advance to next logical step |
-| `/autodev-plan <phase>` | Create detailed phase plans |
-| `/autodev-execute <phase>` | Execute plans (sequential blocking) |
-| `/autodev-verify <phase>` | Manual UAT after execution |
-| `/autodev-fast <task>` | Inline trivial tasks, no planning |
-| `/autodev-do <text>` | Smart dispatch to right command |
+| `/autodev` | Universal entry point — routes to right command |
+| `/autodev-epic` | Create epic from existing repo |
+| `/autodev-story` | Create stories from epic scope |
+| `/autodev-plan` | Create detailed story plans |
+| `/autodev-execute` | Execute plans (sequential blocking) |
+| `/autodev-verify` | Manual UAT after execution |
+| `/autodev-fast` | Inline trivial tasks, no planning |
 | `/autodev-progress` | Show current state and next steps |
 | `/autodev-health` | Validate project integrity |
-| `/autodev-cleanup` | Remove entire scope (.autodev/) |
+| `/autodev-cleanup` | Remove entire epic (.autodev/) |
 
 ## Workflow
 
 ```
-/autodev-scope          → Create scope (SCOPE.md, PHASES.md, STATE.md)
+/autodev-epic           → Create epic (EPIC.md, STORIES.md, STATE.md)
      ↓
-/autodev-next           → Auto-detects state
+/autodev                → Auto-detects state, advances
      ↓
-/autodev-plan 1         → Creates PLAN.md files with waves
+/autodev-plan 1         → Creates {1}-CONTEXT.md and {1}-{01,02}-TASK.md
      ↓
-/autodev-execute 1      → Execute plans in parallel waves
+/autodev-execute 1      → Execute tasks in waves (sequential blocking)
      ↓
 /autodev-verify 1       → Manual user acceptance testing
      ↓
-/autodev-next           → Advance to next phase or suggest next command
+/autodev                → Advance to next story or suggest next command
 ```
+
+## Agile Terminology
+
+Autodev uses standard agile terminology:
+
+| Term | Description |
+|------|-------------|
+| **Epic** | Overall project goal — what we're building |
+| **Story** | A vertical slice delivering user value (model + API + UI) |
+| **Task** | An executable unit within a story |
+| **Subtask** | Atomic work items within a task |
+
+**Vertical slices** mean each Story is complete — it includes the data model, API layer, and UI component together. Stories are independent and can be worked on in parallel.
 
 ## State Files
 
 | File | Purpose |
 |------|---------|
-| `.autodev/SCOPE.md` | Scope definition with goal and must-haves |
-| `.autodev/PHASES.md` | Phase breakdown with status |
+| `.autodev/EPIC.md` | Epic definition with goal and must-haves |
+| `.autodev/STORIES.md` | Story breakdown with status |
 | `.autodev/STATE.md` | Current state and decisions |
-| `.autodev/phases/N-*/{N}-{M}-PLAN.md` | Atomic task plans |
-| `.autodev/phases/N-*/{N}-{M}-SUMMARY.md` | Execution summaries |
+| `.autodev/stories/N-*/{N}-{M}-TASK.md` | Executable task plans |
+| `.autodev/stories/N-*/{N}-{M}-SUMMARY.md` | Execution summaries |
 
 ## Usage Example
 
 ```bash
-# Start a new scope
-/autodev-scope "User authentication feature"
+# Start a new epic
+/autodev-epic "User authentication system"
 
-/autodev-next
+/autodev
 # → Shows: /autodev-plan 1
 
 /autodev-plan 1
 # → Asks questions about implementation
-# → Creates {1}-CONTEXT.md and {1}-{01,02}-PLAN.md
+# → Creates {1}-CONTEXT.md and {1}-{01,02}-TASK.md
 
 /autodev-execute 1
-# → Executes plans in waves
+# → Executes tasks in waves
 # → Reports manual commit needed
 
 /autodev-verify 1
 # → Presents UAT items
 # → User marks pass/fail
 
-/autodev-next
-# → Advances to next phase or suggests next command
+/autodev
+# → Advances to next story or suggests next command
 ```
 
 ## Statusline
