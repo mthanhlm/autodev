@@ -39,7 +39,7 @@ Verify phase exists.
 </step>
 
 <step name="discuss_inline">
-**If `--discuss` flag present (or if phase has no CONTEXT.md):**
+**Only if `--discuss` flag is explicitly passed:**
 
 Use AskUserQuestion for each gray area - ask SEPARATELY:
 
@@ -64,6 +64,8 @@ Any edge cases or known scenarios to handle?
 ```
 
 For each question, only ask if not already determined from scope. Create `{n}-CONTEXT.md` with locked decisions.
+
+**If `--discuss` not passed:** Skip this step. Context from SCOPE.md and PHASES.md is sufficient. Proceed directly to create_plans.
 </step>
 
 <step name="create_plans">
