@@ -1,4 +1,5 @@
 ---
+name: autodev-executor
 description: Executes phase plans in fresh context with wave parallelization
 model: sonnet
 color: blue

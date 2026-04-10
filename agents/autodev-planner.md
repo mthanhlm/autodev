@@ -1,4 +1,5 @@
 ---
+name: autodev-planner
 description: Creates executable XML plans for phase execution
 model: sonnet
 color: green

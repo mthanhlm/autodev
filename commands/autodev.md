@@ -28,10 +28,19 @@ Check if `.autodev/` directory exists:
 ```
 
 If missing:
-```
-No autodev project found. Let me set up the scope first.
-```
-→ Invoke `/autodev-scope` and exit. User can call `/autodev` again after.
+AskUserQuestion({
+  questions: [{
+    question: "No autodev project found. Create a new scope to get started?",
+    header: "New Project",
+    options: [
+      { label: "Create scope", description: "Set up autodev scope for this project" },
+      { label: "Abort", description: "Cancel and do nothing" }
+    ]
+  }]
+})
+
+If user confirms "Create scope" → Invoke `/autodev-scope` and exit.
+If user "Abort" → exit.
 
 If exists, proceed to step: check_input
 </step>
@@ -66,20 +75,22 @@ Read project state:
 | Phase complete, more phases | `/autodev-plan <next_phase>` |
 | Project complete | Show completion summary |
 
-**Display and confirm:**
-```
-## Autodev
+**Ask for confirmation:**
+AskUserQuestion({
+  questions: [{
+    question: "Proceed with /autodev-{command} {args}?",
+    header: "Autodev",
+    options: [
+      { label: "Yes", description: "Run the next step" },
+      { label: "Show details", description: "Preview what will happen" },
+      { label: "Abort", description: "Cancel and do nothing" }
+    ]
+  }]
+})
 
-**Status:** Phase [N] | [status]
-**Next:** /autodev-{command} {args}
-
-Proceed?
-```
-Options: [Yes] [Show details] [Abort]
-
-If user confirms → SlashCommand to invoke.
-If user asks for details → invoke command with preview flag.
-If user aborts → exit.
+If user confirms "Yes" → SlashCommand to invoke.
+If user asks for "Show details" → invoke command with `--discuss` flag to preview.
+If user "Abort" → exit.
 </step>
 
 <step name="route_request">
@@ -97,28 +108,32 @@ Analyze `$ARGUMENTS` against these routing rules. Apply the **first matching** r
 | Health check, diagnose | `/autodev-health` | Diagnostics |
 | Anything else | Use the most fitting above | Best effort routing |
 
-**Ambiguity:** If could match multiple routes, ask:
-```
-"{description}" could be:
-1. /autodev-fast — Quick inline execution
-2. /autodev-plan — Full planning cycle
+**Ambiguity:** If could match multiple routes, use AskUserQuestion:
+AskUserQuestion({
+  questions: [{
+    question: "{description} could be /autodev-fast (quick) or /autodev-plan (full planning). Which?",
+    header: "Route?",
+    options: [
+      { label: "/autodev-fast", description: "Quick inline execution" },
+      { label: "/autodev-plan", description: "Full planning cycle" }
+    ]
+  }]
+})
 
-Which approach?
-```
-Options: [/autodev-fast] [/autodev-plan]
+**Ask for confirmation:**
+AskUserQuestion({
+  questions: [{
+    question: "Input: {first 80 chars of $ARGUMENTS}\nRouting to: /autodev-{command}\nReason: {one-line}",
+    header: "Confirm",
+    options: [
+      { label: "Yes", description: "Run the routed command" },
+      { label: "Abort", description: "Cancel" }
+    ]
+  }]
+})
 
-**Display and confirm:**
-```
-**Input:** {first 80 chars of $ARGUMENTS}
-**Routing to:** /autodev-{command}
-**Reason:** {one-line explanation}
-
-Proceed?
-```
-Options: [Yes] [Abort]
-
-If user confirms → SlashCommand to invoke.
-If user aborts → exit.
+If user confirms "Yes" → SlashCommand to invoke.
+If user "Abort" → exit.
 </step>
 
 </process>

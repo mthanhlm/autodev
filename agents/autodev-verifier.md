@@ -1,7 +1,8 @@
 ---
+name: autodev-verifier
 description: Verifies phase completion against must-haves and requirements
 model: sonnet
-color: purple
+color: magenta
 tools:
   - Read
   - Write
